@@ -13,7 +13,7 @@
     "uncommit": "yarn gm uncommit",
     "reset": "yarn gm reset",
     "dump": "yarn gm migrate && yarn gm reset --shadow --erase && yarn gm migrate --shadow --forceActions",
-    "start": "node -r dotenv/config index.js"
+    "start": "node index.js"
   },
   "private": false,
   "dependencies": {
