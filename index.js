@@ -6,7 +6,7 @@ const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter");
 const app = express()
 
 app.use(
-  postgraphile(process.env.POSTGRESQL_ADDON_URI, process.env.SCHEMA, {
+  postgraphile(process.env.DATABASE_URL, process.env.SCHEMA, {
     subscriptions: true,
     skipPlugins:[
       require('graphile-build').NodePlugin
@@ -23,7 +23,7 @@ app.use(
     enhanceGraphiql: true,
     extendedErrors: ['hint', 'detail', 'errcode'],
     graphiql: true,
-    // ignoreIndexes: false,
+    ignoreIndexes: false,
     ignoreRBAC: false,
     // jwtPgTypeIdentifier: 'app_public.jwt_token',
     // jwtSecret: 'SuperSecret!',
