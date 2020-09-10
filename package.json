@@ -1,0 +1,30 @@
+{
+  "name": "graphile-starter",
+  "version": "1.0.0",
+  "description": "Graphile migrate + postgraphile",
+  "main": "index.js",
+  "author": "Louis Lecointre",
+  "license": "MIT",
+  "scripts": {
+    "gm": "node -r dotenv/config node_modules/.bin/graphile-migrate",
+    "migrate": "yarn gm migrate",
+    "watch": "yarn gm watch",
+    "commit": "yarn gm commit",
+    "uncommit": "yarn gm uncommit",
+    "reset": "yarn gm reset",
+    "dump": "yarn gm migrate && yarn gm reset --shadow --erase && yarn gm migrate --shadow --forceActions",
+    "start": "node -r dotenv/config index.js"
+  },
+  "private": false,
+  "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^6.0.0",
+    "chalk": "^4.1.0",
+    "express": "^4.17.1",
+    "graphile-migrate": "^1.0.1",
+    "postgraphile": "^4.8.0",
+    "postgraphile-plugin-connection-filter": "^2.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
