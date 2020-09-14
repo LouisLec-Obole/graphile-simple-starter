@@ -1,16 +1,12 @@
 {
   version: 1,
   config: {
-    /*
-     * There can be entries here for:
-     *
-     * - `class`: for tables, composite types, views and materialized views
-     * - `attribute`: for columns/attributes (of any 'class' type)
-     * - `constraint`: for table constraints
-     * - `procedure`: for functions/procedures
-     */
     class: {
-
+      users: {
+        tags: {
+          omit: "create"
+        }
+      }
     }
   },
 }
