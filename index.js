@@ -1,36 +1,44 @@
 require("dotenv").config();
 const express = require("express");
-const { postgraphile } = require("postgraphile");
-const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter");
+const { postgraphile, makePluginHook } = require("postgraphile");
+const { default: PgPubsub } = require("@graphile/pg-pubsub");
+
+
+const pluginHook = makePluginHook([PgPubsub]);
+
 
 const app = express();
 
 app.use(
-  postgraphile(process.env.DATABASE_URL, process.env.SCHEMA, {
-    subscriptions: true,
-    skipPlugins: [require("graphile-build").NodePlugin],
-    appendPlugins: [
-      require("postgraphile/plugins").TagsFilePlugin,
-      require("@graphile-contrib/pg-simplify-inflector"),
-      ConnectionFilterPlugin,
-    ],
-    dynamicJson: true,
-    enableCors: true,
-    enableQueryBatching: true,
-    enhanceGraphiql: true,
-    extendedErrors: ["hint", "detail", "errcode"],
-    graphiql: true,
-    ignoreIndexes: false,
-    ignoreRBAC: false,
-    // jwtPgTypeIdentifier: 'app_public.jwt_token',
-    // jwtSecret: 'SuperSecret!',
-    // pgDefaultRole: 'capi_anon',
-    legacyRelations: "omit",
-    setofFunctionsContainNulls: false,
-    showErrorStack: "json",
-    subscriptions: true,
-    watchPg: process.env.NODE_ENV == "development",
-    allowExplain(req) {},
+  postgraphile(
+    process.env.DATABASE_URL,
+    process.env.SCHEMA,
+    {
+      pluginHook,
+      subscriptions: true,
+      skipPlugins: [require("graphile-build").NodePlugin],
+      appendPlugins: [
+        require("./plugins/subscriptionPlugin"),
+        require("postgraphile/plugins").TagsFilePlugin,
+        require("@graphile-contrib/pg-simplify-inflector"),
+        require("postgraphile-plugin-connection-filter"),
+      ],
+      dynamicJson: true,
+      enableCors: true,
+      enableQueryBatching: true,
+      enhanceGraphiql: true,
+      extendedErrors: ["hint", "detail", "errcode"],
+      graphiql: process.env.NODE_ENV == "development",
+      ignoreIndexes: false,
+      ignoreRBAC: false,
+      jwtPgTypeIdentifier: "app_public.jwt_token",
+      jwtSecret: "SuperSecret!",
+      pgDefaultRole: "capi_anon",
+      legacyRelations: "omit",
+      setofFunctionsContainNulls: false,
+      showErrorStack: "json",
+      watchPg: process.env.NODE_ENV == "development",
+      allowExplain(req) {},
   })
 );
 
