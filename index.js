@@ -19,6 +19,8 @@ app.use(
       skipPlugins: [require("graphile-build").NodePlugin],
       appendPlugins: [
         require("./plugins/subscriptionPlugin"),
+        require("./plugins/wrapRegistrationPlugin"),
+        require("./plugins/chuckNorrisPlugin"),
         require("postgraphile/plugins").TagsFilePlugin,
         require("@graphile-contrib/pg-simplify-inflector"),
         require("postgraphile-plugin-connection-filter"),
