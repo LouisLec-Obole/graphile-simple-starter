@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "graphile-migrate": "^1.0.1",
     "graphile-worker": "^0.8.0",
+    "node-fetch": "^2.6.1",
     "postgraphile": "^4.8.0",
     "postgraphile-plugin-connection-filter": "^2.0.0"
   },
