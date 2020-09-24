@@ -82,3 +82,42 @@ create trigger _500_boat_created
 after insert on app_public.boats
 for each row
 execute procedure app_public.tg__boat_created();
+
+create type app_public.boat_equipment_type as enum ('ECDIS', 'GPS', 'VHF');
+
+-- create table app_public.boat_equipment_type (
+--   type text primary key,
+--   description text
+-- );
+-- comment on table app_public.boat_equipment_type is E'@enum';
+-- insert into app_public.boat_equipment_type (type, description) values
+--   ('ECDIS', 'Computer'),
+--   ('GPS', 'Global positionning system'),
+--   ('VHF', 'Radio');
+
+create table app_public.boat_equipments (
+  boat_id uuid not null references app_public.boats on delete cascade,
+  -- type text not null references app_public.boat_equipment_type on delete cascade
+  type app_public.boat_equipment_type not null
+);
+grant all on app_public.boat_equipments to capi_anon;
+CREATE INDEX ON "app_public"."boat_equipments"("boat_id");
+
+
+create function app_public.create_boat(
+  boat app_public.boats,
+  equipments app_public.boat_equipments[]
+) returns app_public.boats as $$
+declare
+  v_boat app_public.boats;
+begin
+  insert into app_public.boats(name, constructeur, immatriculation, length, user_id) values (
+    $1.name,
+    $1.constructeur,
+    $1.immatriculation,
+    $1.length,
+    coalesce(app_public.current_user_id(), $1.user_id)
+  ) returning * into v_boat;
+  insert into app_public.boat_equipments select (v_boat.id)::uuid, equipment.type from unnest($2) as equipment;
+  return v_boat;
+end; $$ language plpgsql volatile security definer;

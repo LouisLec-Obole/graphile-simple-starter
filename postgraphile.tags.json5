@@ -6,6 +6,25 @@
         tags: {
           omit: "create"
         }
+      },
+      boats: {
+        tags: {
+          omit: "create,update"
+        }
+      },
+      boat_equipments: {
+        tags: {
+          simpleCollections: "only",
+          omit: "update,create,delete,all"
+        }
+      }
+    },
+    procedure: {
+      create_boat: {
+        tags: {
+          arg0variant: "patch",
+          arg1variant: "patch"
+        }
       }
     }
   },
