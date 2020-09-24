@@ -1,6 +1,6 @@
 create table app_public.users (
   id uuid not null default gen_random_uuid() primary key,
-  email citext unique not null check (email ~ '[^@]+@[^@]+\.[^@]+'),
+  email citext unique not null check (email ~ '[^\s][^@\s]+@[^@]+\.[^@]+'),
   firstname text not null,
   phone_number text,
   birthday timestamptz not null check (birthday < now()),
@@ -51,7 +51,7 @@ create table app_private.user_secrets (
 insert into app_public.users(id, email, firstname, birthday) values
 ('4f1a111f-065f-4920-a408-b65bb5c076d5', 'louis@capi.com', 'Louis', '1900-12-12'),
 ('3e986d62-6147-433e-a690-c4c5e9536e4d', 'nicolas@capi.com', 'Nicolas', '1950-12-12'),
-('a454817b-4467-4986-92a3-28c79810b8b3', 'corentin@capi.com', 'Corentin', '2000-12-12');
+('a454817b-4467-4986-92a3-28c79810b8b3', 'corentin@capi.com', 'Corentin', '2019-12-12');
 
 insert into app_private.user_secrets(user_id, password_hash) values
 ('4f1a111f-065f-4920-a408-b65bb5c076d5', crypt('plop', gen_salt('bf', 8))),
