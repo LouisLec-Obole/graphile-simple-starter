@@ -128,7 +128,7 @@ create schema app_private;
 ## Définitions de nos tables
 Super, on a commencé à mettre en place notre schéma de base de données (attention, on distinguera par la suite "schema de base de données" avec les "schémas" de la base de données créés juste au dessus 😉) et on a plus d'erreurs si on ré-exécute notre commande `node .`... Mais notre API ne fait toujours rien ! Il va falloir rentrer dans notre BDD des choses plus intéressantes. Commençons par créer des tables. Nous allons créer un schema plutôt simple dans lequel des utilisateurs peuvent renseigner leurs bateaux. Il va nous falloir deux tables: une pour les utilisateurs, qui contiendra quelques infos de base pour les identifier, et une table pour renseigner les bateaux, et qui fera réference aux utilisateurs.
 
-```mermaid
+:::mermaid
 classDiagram
 User *-- Boat : owns
 User : uuid id
@@ -144,7 +144,7 @@ Boat : string constructeur
 Boat : string immatriculation
 Boat : float length
 Boat : uuid user_id
-```
+:::
 
 En SQL, ça va donner ça :
 ```sql
