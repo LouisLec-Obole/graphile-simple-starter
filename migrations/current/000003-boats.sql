@@ -121,3 +121,18 @@ begin
   insert into app_public.boat_equipments select (v_boat.id)::uuid, equipment.type from unnest($2) as equipment;
   return v_boat;
 end; $$ language plpgsql volatile security definer;
+
+create view app_public.custom_boat as
+select usr.firstname as prenom_utilisateur, boat.name as nom_bateau
+from app_public.users as usr
+inner join app_public.boats as boat on boat.user_id = usr.id;
+
+
+grant select on app_public.custom_boat to capi_user;
+
+
+create table app_public.boat_models (
+  id uuid not null default gen_random_uuid() primary key unique,
+  name text not null
+);
+grant all on app_public.boat_models to capi_anon;
